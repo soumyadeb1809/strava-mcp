@@ -69,6 +69,52 @@ class StravaClient:
         else:
             response.raise_for_status()
 
+    def get_athlete_stats(self, athlete_id):
+        url = f"https://www.strava.com/api/v3/athletes/{athlete_id}/stats"
+        response = requests.get(url, headers=self.get_headers())
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+            
+    def get_logged_in_athlete_zones(self):
+        url = "https://www.strava.com/api/v3/athlete/zones"
+        response = requests.get(url, headers=self.get_headers())
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def list_athlete_activities(self, before=None, after=None, page=1, per_page=30):
+        url = "https://www.strava.com/api/v3/athlete/activities"
+        params = {
+            'page': page,
+            'per_page': per_page
+        }
+        if before:
+            params['before'] = before
+        if after:
+            params['after'] = after
+            
+        response = requests.get(url, headers=self.get_headers(), params=params)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def get_activity(self, activity_id, include_all_efforts=True):
+        url = f"https://www.strava.com/api/v3/activities/{activity_id}"
+        params = {'include_all_efforts': str(include_all_efforts).lower()}
+        response = requests.get(url, headers=self.get_headers(), params=params)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
 if __name__ == "__main__":
     # Test checking if the token is valid, or refresh it
     try:
