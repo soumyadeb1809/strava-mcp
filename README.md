@@ -100,7 +100,7 @@ Restart or reload your Gemini CLI for the tools to become active.
 
 If you have deployed this MCP Server to a cloud provider (such as Render) that supports SSE transport, you can connect your AI assistant directly to the remote URL instead of running the Python script locally.
 
-This requires having `npx` (Node.js) installed locally in order to run the standard `@modelcontextprotocol/sse-client` proxy.
+This requires having the `fastmcp` CLI installed locally in your Python environment.
 
 ### Cloud Configuration Example (Claude Desktop)
 
@@ -108,16 +108,19 @@ This requires having `npx` (Node.js) installed locally in order to run the stand
 {
   "mcpServers": {
     "strava": {
-      "command": "npx",
+      "command": "/absolute/path/to/strava-mcp/venv/bin/fastmcp",
       "args": [
-        "-y",
-        "@modelcontextprotocol/sse-client",
+        "run",
+        "--no-banner",
+        "--log-level",
+        "CRITICAL",
         "https://strava-mcp-r7v4.onrender.com/sse"
       ]
     }
   }
 }
 ```
+*Note: Replace `/absolute/path/to/strava-mcp/` with the actual path to wherever you cloned this repository.*
 
 ## Project Structure
 - `server.py`: The FastMCP server initialization and defined tools.
