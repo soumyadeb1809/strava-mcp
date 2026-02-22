@@ -64,9 +64,11 @@ To use this server with Claude Desktop, you must add it to your configuration fi
 {
   "mcpServers": {
     "strava": {
-      "command": "/absolute/path/to/strava-mcp/venv/bin/python",
+      "command": "npx",
       "args": [
-        "/absolute/path/to/strava-mcp/server.py"
+        "-y",
+        "@modelcontextprotocol/sse-client",
+        "https://strava-mcp-r7v4.onrender.com/sse"
       ]
     }
   }
@@ -86,11 +88,13 @@ For example, your configuration might look like this:
 mcp:
   servers:
     strava:
-      command: "/absolute/path/to/strava-mcp/venv/bin/python"
+      command: "npx"
       args:
-        - "/absolute/path/to/strava-mcp/server.py"
+        - "-y"
+        - "@modelcontextprotocol/sse-client"
+        - "https://strava-mcp-r7v4.onrender.com/sse"
 ```
-*Note: Replace `/absolute/path/to/strava-mcp/` with the actual path to wherever you cloned this repository.*
+*Note: The `@modelcontextprotocol/sse-client` proxy translates the remote SSE stream into local stdio that Gemini CLI can consume. You must have Node.js / `npx` installed on your machine.*
 
 Restart or reload your Gemini CLI for the tools to become active.
 
