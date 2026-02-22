@@ -1,6 +1,6 @@
 # Strava MCP Server
 
-A Model Context Protocol (MCP) server that provides an interface to interact with your Strava account. This server allows AI assistants (like Claude) to fetch your profile information, statistics, power/heart rate zones, and activity data.
+A Model Context Protocol (MCP) server that provides an interface to interact with your Strava account. This server allows AI assistants (like Claude, Gemini, etc.) to fetch your profile information, statistics, power/heart rate zones, and activity data.
 
 ## Features
 
@@ -52,7 +52,11 @@ Typically, the context provider (Claude Desktop) will run the server, but you ca
 python server.py
 ```
 
-## Claude Desktop Integration
+## Tool Integration
+
+This server can be used by any MCP-compatible client. Below are instructions for popular clients:
+
+### Claude Desktop
 
 To use this server with Claude Desktop, you must add it to your configuration file located at `~/Library/Application Support/Claude/claude_desktop_config.json`. Add the entry inside the `mcpServers` object, pointing to the absolute paths of this project on your machine:
 
@@ -72,6 +76,24 @@ To use this server with Claude Desktop, you must add it to your configuration fi
 
 Restart Claude Desktop for the tools to appear.
 
+### Gemini CLI
+
+To use this server with `gemini-cli`, you can add it to your configuration file typically located at `~/.config/gemini/config.yaml` or wherever your CLI environment stores MCP server settings.
+
+For example, your configuration might look like this:
+
+```yaml
+mcp:
+  servers:
+    strava:
+      command: "/absolute/path/to/strava-mcp/venv/bin/python"
+      args:
+        - "/absolute/path/to/strava-mcp/server.py"
+```
+*Note: Replace `/absolute/path/to/strava-mcp/` with the actual path to wherever you cloned this repository.*
+
+Restart or reload your Gemini CLI for the tools to become active.
+
 ## Project Structure
 - `server.py`: The FastMCP server initialization and defined tools.
 - `strava_client.py`: A helper class that handles HTTP requests to the Strava API and automatically refreshes tokens.
@@ -82,5 +104,5 @@ Restart Claude Desktop for the tools to appear.
 - **`get_authenticated_athlete()`**: Returns the authenticated athlete's profile.
 - **`get_athlete_stats(athlete_id: int)`**: Returns the activity stats for an athlete. *Requires the athlete ID from the previous tool.*
 - **`get_logged_in_athlete_zones()`**: Returns heart rate and power zones.
-- **`list_athlete_activities(before: int=None, after: int=None, page: int=1, per_page: int=30)`**: Returns a list of activities. Allows filtering by epoch timestamps.
+- **`list_athlete_activities(before: int=None, after: int=None, page: int=1)`**: Returns a list of activities. Allows filtering by epoch timestamps.
 - **`get_activity(activity_id: int, include_all_efforts: bool=True)`**: Returns a detailed view of a specific activity.

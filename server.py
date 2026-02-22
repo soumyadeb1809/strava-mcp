@@ -52,14 +52,14 @@ def get_logged_in_athlete_zones() -> dict | str:
         return f"Error retrieving athlete zones: {str(e)}"
 
 @mcp.tool()
-def list_athlete_activities(before: int = None, after: int = None, page: int = 1, per_page: int = 30) -> list | str:
+def list_athlete_activities(before: int = None, after: int = None, page: int = 1) -> list | str:
     """
     Returns the activities of the authenticated athlete.
     'before' and 'after' are epoch timestamps to filter activities.
-    'page' (default 1) and 'per_page' (default 30) control pagination.
+    'page' (default 1) control pagination.
     """
     try:
-        return strava_client.list_athlete_activities(before, after, page, per_page)
+        return strava_client.list_athlete_activities(before, after, page)
     except Exception as e:
         return f"Error retrieving activities: {str(e)}"
 

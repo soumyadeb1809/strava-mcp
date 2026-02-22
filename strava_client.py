@@ -98,18 +98,18 @@ class StravaClient:
         else:
             response.raise_for_status()
 
-    def list_athlete_activities(self, before=None, after=None, page=1, per_page=30):
+    def list_athlete_activities(self, before=None, after=None, page=1):
         url = "https://www.strava.com/api/v3/athlete/activities"
         params = {
             'page': page,
-            'per_page': per_page
+            'per_page': 30
         }
         if before:
             params['before'] = before
         if after:
             params['after'] = after
             
-        response = requests.get(url, headers=self.get_headers(), params=params)
+        # ...
         
         if response.status_code == 200:
             return response.json()
