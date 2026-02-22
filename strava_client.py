@@ -50,7 +50,18 @@ class StravaClient:
 
     def get_headers(self):
         if not self.access_token:
-            raise ValueError("No access token. Please run auth.py first.")
+            print("No access token found. Triggering authentication flow...")
+            from auth import run_auth_flow
+            run_auth_flow()
+            
+            # Reload attributes from the newly populated .env
+            load_dotenv(self.dotenv_path, override=True)
+            self.access_token = os.getenv('STRAVA_ACCESS_TOKEN')
+            self.refresh_token = os.getenv('STRAVA_REFRESH_TOKEN')
+            self.expires_at = os.getenv('EXPIRES_AT')
+            
+            if not self.access_token:
+                 raise ValueError("Authentication flow failed to retrieve an access token.")
         
         if self.is_token_expired():
             self.refresh_access_token()

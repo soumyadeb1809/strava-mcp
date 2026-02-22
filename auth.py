@@ -67,11 +67,9 @@ def exchange_token(code):
         print(f"Failed to exchange token. Status code: {response.status_code}")
         print(response.text)
 
-def main():
+def run_auth_flow():
     if not CLIENT_ID or not CLIENT_SECRET:
-        print("ERROR: STRAVA_CLIENT_ID or STRAVA_CLIENT_SECRET is missing from .env")
-        print("Please update the .env file with your API credentials.")
-        return
+        raise ValueError("ERROR: STRAVA_CLIENT_ID or STRAVA_CLIENT_SECRET is missing from .env. Please update the .env file with your API credentials.")
 
     auth_url = (
         f"https://www.strava.com/oauth/authorize?"
@@ -90,6 +88,9 @@ def main():
     except Exception as e:
         # Happens when the server is intentionally closed from the handler
         pass
+    
+    # Reload environment variables to get the newly saved tokens
+    load_dotenv(dotenv_path, override=True)
 
 if __name__ == "__main__":
-    main()
+    run_auth_flow()
