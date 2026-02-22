@@ -64,11 +64,9 @@ To use this server with Claude Desktop, you must add it to your configuration fi
 {
   "mcpServers": {
     "strava": {
-      "command": "npx",
+      "command": "/absolute/path/to/strava-mcp/venv/bin/python",
       "args": [
-        "-y",
-        "@modelcontextprotocol/sse-client",
-        "https://strava-mcp-r7v4.onrender.com/sse"
+        "/absolute/path/to/strava-mcp/server.py"
       ]
     }
   }
@@ -88,15 +86,38 @@ For example, your configuration might look like this:
 mcp:
   servers:
     strava:
-      command: "npx"
+      command: "/absolute/path/to/strava-mcp/venv/bin/python"
       args:
-        - "-y"
-        - "@modelcontextprotocol/sse-client"
-        - "https://strava-mcp-r7v4.onrender.com/sse"
+        - "/absolute/path/to/strava-mcp/server.py"
 ```
-*Note: The `@modelcontextprotocol/sse-client` proxy translates the remote SSE stream into local stdio that Gemini CLI can consume. You must have Node.js / `npx` installed on your machine.*
+*Note: Replace `/absolute/path/to/strava-mcp/` with the actual path to wherever you cloned this repository.*
 
 Restart or reload your Gemini CLI for the tools to become active.
+
+---
+
+## Connecting to a Deployed Cloud Server
+
+If you have deployed this MCP Server to a cloud provider (such as Render) that supports SSE transport, you can connect your AI assistant directly to the remote URL instead of running the Python script locally.
+
+This requires having `npx` (Node.js) installed locally in order to run the standard `@modelcontextprotocol/sse-client` proxy.
+
+### Cloud Configuration Example (Claude Desktop)
+
+```json
+{
+  "mcpServers": {
+    "strava": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/sse-client",
+        "https://strava-mcp-r7v4.onrender.com/sse"
+      ]
+    }
+  }
+}
+```
 
 ## Project Structure
 - `server.py`: The FastMCP server initialization and defined tools.
